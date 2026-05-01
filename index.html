@@ -1,0 +1,833 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Baptiste — Ingénieur Mécanique</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --rouge: #9B1A2E;
+    --rouge-light: #C0273E;
+    --rouge-pale: #f5e8eb;
+    --noir: #0a0a0a;
+    --gris-sombre: #1a1a1a;
+    --gris: #3d3d3d;
+    --gris-clair: #888;
+    --blanc: #ffffff;
+    --creme: #faf9f7;
+    --or: #c8a96e;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--noir);
+    color: var(--blanc);
+    overflow-x: hidden;
+  }
+
+  /* ─── NAV ─── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    padding: 18px 48px;
+    display: flex; justify-content: space-between; align-items: center;
+    background: rgba(10,10,10,0.72);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+    transition: all 0.4s ease;
+  }
+  .nav-logo {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.15rem; font-weight: 700;
+    letter-spacing: 0.04em;
+    color: var(--blanc);
+  }
+  .nav-logo span { color: var(--rouge-light); }
+  .nav-links { display: flex; gap: 36px; list-style: none; }
+  .nav-links a {
+    color: rgba(255,255,255,0.65); text-decoration: none;
+    font-size: 0.82rem; letter-spacing: 0.08em; text-transform: uppercase;
+    transition: color 0.3s;
+  }
+  .nav-links a:hover { color: var(--blanc); }
+  .nav-cta {
+    background: var(--rouge); color: var(--blanc);
+    padding: 9px 22px; border-radius: 100px;
+    font-size: 0.82rem; letter-spacing: 0.06em;
+    text-decoration: none; transition: background 0.3s;
+  }
+  .nav-cta:hover { background: var(--rouge-light); }
+
+  /* ─── HERO ─── */
+  #hero {
+    height: 100vh; position: relative;
+    display: flex; flex-direction: column;
+    justify-content: center; align-items: center;
+    text-align: center;
+    overflow: hidden;
+  }
+  .hero-bg {
+    position: absolute; inset: 0;
+    background: radial-gradient(ellipse 80% 60% at 50% 40%, rgba(155,26,46,0.18) 0%, transparent 70%),
+                radial-gradient(ellipse 60% 80% at 80% 80%, rgba(200,169,110,0.07) 0%, transparent 60%),
+                var(--noir);
+  }
+  /* Orbe animé */
+  .hero-orb {
+    position: absolute;
+    width: 600px; height: 600px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(155,26,46,0.22) 0%, transparent 70%);
+    animation: orb-pulse 6s ease-in-out infinite;
+    pointer-events: none;
+  }
+  @keyframes orb-pulse {
+    0%, 100% { transform: scale(1) translate(0,0); opacity: 0.6; }
+    50% { transform: scale(1.15) translate(20px,-20px); opacity: 1; }
+  }
+  .hero-eyebrow {
+    font-size: 0.72rem; letter-spacing: 0.22em; text-transform: uppercase;
+    color: var(--rouge-light); margin-bottom: 20px;
+    opacity: 0; animation: fadeUp 1s ease 0.3s forwards;
+  }
+  .hero-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(3.2rem, 8vw, 7.5rem);
+    font-weight: 900; line-height: 1.0;
+    letter-spacing: -0.02em;
+    opacity: 0; animation: fadeUp 1s ease 0.5s forwards;
+  }
+  .hero-title em { font-style: italic; color: var(--rouge-light); }
+  .hero-sub {
+    margin-top: 24px;
+    font-size: clamp(1rem, 2vw, 1.2rem);
+    font-weight: 300; color: rgba(255,255,255,0.55);
+    max-width: 500px;
+    opacity: 0; animation: fadeUp 1s ease 0.7s forwards;
+  }
+  .hero-badges {
+    margin-top: 36px; display: flex; gap: 12px; flex-wrap: wrap; justify-content: center;
+    opacity: 0; animation: fadeUp 1s ease 0.9s forwards;
+  }
+  .badge {
+    padding: 7px 18px; border-radius: 100px;
+    border: 1px solid rgba(255,255,255,0.18);
+    font-size: 0.75rem; letter-spacing: 0.06em; color: rgba(255,255,255,0.7);
+    backdrop-filter: blur(10px);
+  }
+  .badge.red { border-color: var(--rouge); color: var(--rouge-light); background: rgba(155,26,46,0.12); }
+  .hero-scroll {
+    position: absolute; bottom: 36px;
+    display: flex; flex-direction: column; align-items: center; gap: 8px;
+    opacity: 0; animation: fadeUp 1s ease 1.2s forwards;
+  }
+  .scroll-line {
+    width: 1px; height: 50px;
+    background: linear-gradient(to bottom, rgba(255,255,255,0.4), transparent);
+    animation: scroll-drop 2s ease-in-out infinite;
+  }
+  @keyframes scroll-drop { 0% { transform: scaleY(0); transform-origin: top; } 50% { transform: scaleY(1); transform-origin: top; } 51% { transform: scaleY(1); transform-origin: bottom; } 100% { transform: scaleY(0); transform-origin: bottom; } }
+  .scroll-label { font-size: 0.65rem; letter-spacing: 0.15em; color: rgba(255,255,255,0.35); }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ─── SECTION GÉNÉRIQUE ─── */
+  section { padding: 120px 48px; }
+  .section-label {
+    font-size: 0.7rem; letter-spacing: 0.2em; text-transform: uppercase;
+    color: var(--rouge-light); margin-bottom: 12px;
+  }
+  .section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2rem, 5vw, 3.8rem);
+    font-weight: 800; line-height: 1.1;
+    letter-spacing: -0.01em;
+  }
+
+  /* ─── ABOUT (SPLIT PARALLAX) ─── */
+  #about {
+    background: var(--creme); color: var(--noir);
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 80px; align-items: center;
+    padding: 120px 80px;
+  }
+  .about-visual {
+    position: relative; height: 520px; border-radius: 24px; overflow: hidden;
+  }
+  .about-img-parallax {
+    width: 100%; height: 140%;
+    background: linear-gradient(135deg, var(--rouge) 0%, #6a0f1c 50%, var(--noir) 100%);
+    display: flex; align-items: center; justify-content: center;
+    position: absolute; top: -20%;
+    transition: transform 0.1s linear;
+  }
+  .about-avatar {
+    width: 160px; height: 160px; border-radius: 50%;
+    background: rgba(255,255,255,0.15);
+    border: 3px solid rgba(255,255,255,0.3);
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Playfair Display', serif;
+    font-size: 4rem; color: white;
+  }
+  .about-deco {
+    position: absolute; bottom: -20px; right: -20px;
+    width: 120px; height: 120px; border-radius: 50%;
+    background: var(--or); opacity: 0.6;
+    filter: blur(40px);
+  }
+  .about-content { display: flex; flex-direction: column; gap: 20px; }
+  .about-content .section-label { color: var(--rouge); }
+  .about-content .section-title { color: var(--noir); }
+  .about-content p { color: #555; font-size: 1rem; line-height: 1.8; font-weight: 300; }
+  .about-stats {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 12px;
+  }
+  .stat-card {
+    padding: 20px; border-radius: 16px;
+    background: white; box-shadow: 0 4px 24px rgba(0,0,0,0.06);
+  }
+  .stat-number {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.2rem; font-weight: 900; color: var(--rouge);
+  }
+  .stat-label { font-size: 0.8rem; color: #888; margin-top: 4px; }
+
+  /* ─── FORMATION (STICKY SCROLL) ─── */
+  #formation { background: var(--gris-sombre); }
+  .formation-header { text-align: center; margin-bottom: 80px; }
+  .timeline { display: flex; flex-direction: column; gap: 0; max-width: 900px; margin: 0 auto; }
+  .timeline-item {
+    display: grid; grid-template-columns: 120px 40px 1fr;
+    gap: 0 0; align-items: start;
+    padding: 0 0 64px;
+  }
+  .timeline-year {
+    font-family: 'Playfair Display', serif;
+    font-size: 0.85rem; color: var(--rouge-light);
+    font-weight: 700; padding-top: 4px;
+    text-align: right; padding-right: 24px;
+    letter-spacing: 0.06em;
+  }
+  .timeline-connector {
+    display: flex; flex-direction: column; align-items: center;
+  }
+  .timeline-dot {
+    width: 14px; height: 14px; border-radius: 50%;
+    background: var(--rouge); border: 3px solid var(--gris-sombre);
+    box-shadow: 0 0 0 3px var(--rouge);
+    flex-shrink: 0; margin-top: 3px;
+    transition: transform 0.3s;
+  }
+  .timeline-item:hover .timeline-dot { transform: scale(1.4); }
+  .timeline-line {
+    flex: 1; width: 2px;
+    background: linear-gradient(to bottom, var(--rouge), rgba(155,26,46,0.1));
+    margin-top: 8px;
+  }
+  .timeline-item:last-child .timeline-line { display: none; }
+  .timeline-content { padding-left: 24px; }
+  .timeline-school {
+    font-size: 0.7rem; letter-spacing: 0.14em; text-transform: uppercase;
+    color: var(--rouge-light); margin-bottom: 6px;
+  }
+  .timeline-degree {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.4rem; font-weight: 700; margin-bottom: 10px;
+  }
+  .timeline-desc { color: rgba(255,255,255,0.5); font-size: 0.9rem; line-height: 1.7; }
+  .timeline-tags { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 14px; }
+  .tag {
+    padding: 4px 14px; border-radius: 100px;
+    border: 1px solid rgba(155,26,46,0.5);
+    font-size: 0.72rem; color: rgba(255,255,255,0.6);
+  }
+
+  /* ─── COMPÉTENCES ─── */
+  #competences {
+    background: var(--noir);
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 80px; align-items: start;
+    padding: 120px 80px;
+  }
+  .skills-left .section-title { margin-bottom: 16px; }
+  .skills-left p { color: rgba(255,255,255,0.45); line-height: 1.8; margin-bottom: 32px; }
+  .skill-row { margin-bottom: 22px; }
+  .skill-name { display: flex; justify-content: space-between; margin-bottom: 8px; font-size: 0.88rem; color: rgba(255,255,255,0.8); }
+  .skill-pct { color: var(--rouge-light); font-weight: 500; }
+  .skill-track {
+    height: 3px; background: rgba(255,255,255,0.1); border-radius: 100px; overflow: hidden;
+  }
+  .skill-fill {
+    height: 100%; border-radius: 100px;
+    background: linear-gradient(90deg, var(--rouge), var(--rouge-light));
+    width: 0; transition: width 1.4s cubic-bezier(0.16,1,0.3,1);
+  }
+  .skills-right { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .skill-card {
+    padding: 28px 22px; border-radius: 20px;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.07);
+    transition: border-color 0.3s, transform 0.3s;
+  }
+  .skill-card:hover { border-color: var(--rouge); transform: translateY(-4px); }
+  .skill-card-icon { font-size: 1.8rem; margin-bottom: 12px; }
+  .skill-card-name { font-size: 0.88rem; font-weight: 500; margin-bottom: 6px; }
+  .skill-card-desc { font-size: 0.75rem; color: rgba(255,255,255,0.35); line-height: 1.6; }
+
+  /* ─── PROJETS (SCROLL PARALLAX CARDS) ─── */
+  #projets { background: var(--creme); color: var(--noir); padding: 120px 48px; }
+  #projets .section-label { color: var(--rouge); }
+  #projets .section-title { color: var(--noir); margin-bottom: 64px; }
+  .projects-scroll-hint { color: #aaa; font-size: 0.8rem; margin-top: -48px; margin-bottom: 48px; }
+  .projects-grid {
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px;
+  }
+  .project-card {
+    border-radius: 24px; overflow: hidden;
+    background: white; box-shadow: 0 8px 40px rgba(0,0,0,0.08);
+    transition: transform 0.4s cubic-bezier(0.16,1,0.3,1), box-shadow 0.4s;
+    will-change: transform;
+  }
+  .project-card:hover { transform: translateY(-8px) scale(1.02); box-shadow: 0 24px 64px rgba(0,0,0,0.16); }
+  .project-visual {
+    height: 200px; overflow: hidden; position: relative;
+  }
+  .project-img-layer {
+    width: 100%; height: 130%; position: absolute;
+    top: -15%; transition: transform 0.1s linear;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .project-icon { font-size: 4rem; }
+  .proj-bg-1 { background: linear-gradient(135deg, #1a1a2e, var(--rouge) 80%); }
+  .proj-bg-2 { background: linear-gradient(135deg, #0a2818, #1a7a40 80%); }
+  .proj-bg-3 { background: linear-gradient(135deg, #1a1018, #7a1a3a 80%); }
+  .proj-bg-4 { background: linear-gradient(135deg, #0d1a2e, #1a3a7a 80%); }
+  .proj-bg-5 { background: linear-gradient(135deg, #1a1200, #7a5a10 80%); }
+  .proj-bg-6 { background: linear-gradient(135deg, #0a0d1a, #2a3070 80%); }
+  .project-body { padding: 22px 24px 26px; }
+  .project-tag {
+    font-size: 0.65rem; letter-spacing: 0.14em; text-transform: uppercase;
+    color: var(--rouge); margin-bottom: 8px;
+  }
+  .project-title { font-family: 'Playfair Display', serif; font-size: 1.15rem; font-weight: 700; margin-bottom: 10px; color: var(--noir); }
+  .project-desc { font-size: 0.83rem; color: #666; line-height: 1.7; }
+
+  /* ─── EXPÉRIENCES ─── */
+  #experiences { background: var(--noir); padding: 120px 80px; }
+  .exp-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-top: 60px; }
+  .exp-card {
+    padding: 36px; border-radius: 24px;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.07);
+    position: relative; overflow: hidden;
+    transition: border-color 0.4s, transform 0.4s;
+  }
+  .exp-card::before {
+    content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
+    background: linear-gradient(90deg, var(--rouge), transparent);
+    transform: scaleX(0); transform-origin: left;
+    transition: transform 0.4s cubic-bezier(0.16,1,0.3,1);
+  }
+  .exp-card:hover::before { transform: scaleX(1); }
+  .exp-card:hover { border-color: rgba(155,26,46,0.4); transform: translateY(-4px); }
+  .exp-period { font-size: 0.7rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--rouge-light); margin-bottom: 6px; }
+  .exp-company { font-family: 'Playfair Display', serif; font-size: 1.4rem; font-weight: 700; margin-bottom: 4px; }
+  .exp-role { font-size: 0.85rem; color: rgba(255,255,255,0.45); margin-bottom: 16px; }
+  .exp-desc { font-size: 0.9rem; color: rgba(255,255,255,0.6); line-height: 1.7; }
+  .exp-skills { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 18px; }
+  .exp-skill { padding: 4px 12px; border-radius: 100px; font-size: 0.7rem; background: rgba(155,26,46,0.15); color: var(--rouge-light); }
+
+  /* ─── CONTACT ─── */
+  #contact {
+    background: var(--rouge);
+    padding: 120px 48px;
+    text-align: center;
+    position: relative; overflow: hidden;
+  }
+  #contact::before {
+    content: ''; position: absolute; inset: 0;
+    background: radial-gradient(ellipse 80% 80% at 50% 0%, rgba(255,255,255,0.12), transparent);
+  }
+  #contact .section-label { color: rgba(255,255,255,0.6); }
+  #contact .section-title { color: white; margin-bottom: 20px; }
+  .contact-sub { color: rgba(255,255,255,0.7); font-size: 1.05rem; margin-bottom: 48px; }
+  .contact-links { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
+  .contact-btn {
+    padding: 16px 36px; border-radius: 100px;
+    font-size: 0.9rem; font-weight: 500; text-decoration: none;
+    transition: all 0.3s; letter-spacing: 0.04em;
+  }
+  .contact-btn.primary { background: white; color: var(--rouge); }
+  .contact-btn.primary:hover { background: var(--creme); transform: translateY(-2px); box-shadow: 0 12px 40px rgba(0,0,0,0.2); }
+  .contact-btn.secondary { background: rgba(255,255,255,0.15); color: white; border: 1px solid rgba(255,255,255,0.3); }
+  .contact-btn.secondary:hover { background: rgba(255,255,255,0.25); }
+  .contact-info { margin-top: 48px; color: rgba(255,255,255,0.5); font-size: 0.85rem; }
+
+  /* ─── FOOTER ─── */
+  footer {
+    background: var(--noir); padding: 32px 48px;
+    display: flex; justify-content: space-between; align-items: center;
+    border-top: 1px solid rgba(255,255,255,0.07);
+    font-size: 0.78rem; color: rgba(255,255,255,0.3);
+  }
+  footer strong { color: rgba(255,255,255,0.5); font-weight: 500; }
+
+  /* ─── SCROLL REVEAL ─── */
+  .reveal { opacity: 0; transform: translateY(40px); transition: opacity 0.8s ease, transform 0.8s cubic-bezier(0.16,1,0.3,1); }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+  .reveal-delay-1 { transition-delay: 0.15s; }
+  .reveal-delay-2 { transition-delay: 0.3s; }
+  .reveal-delay-3 { transition-delay: 0.45s; }
+
+  /* ─── RESPONSIVE ─── */
+  @media (max-width: 900px) {
+    nav { padding: 16px 24px; }
+    .nav-links { display: none; }
+    section { padding: 80px 24px; }
+    #about, #competences, #experiences { grid-template-columns: 1fr; padding: 80px 24px; }
+    .projects-grid { grid-template-columns: 1fr; }
+    .exp-grid { grid-template-columns: 1fr; }
+    .skills-right { grid-template-columns: 1fr; }
+    .about-visual { height: 280px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav id="navbar">
+  <div class="nav-logo">Baptiste <span>M.</span></div>
+  <ul class="nav-links">
+    <li><a href="#about">À propos</a></li>
+    <li><a href="#formation">Formation</a></li>
+    <li><a href="#projets">Projets</a></li>
+    <li><a href="#experiences">Expériences</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+  <a href="#contact" class="nav-cta">Me contacter</a>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-orb"></div>
+  <p class="hero-eyebrow" style="position:relative">Ingénieur Mécanique · École Centrale Lyon</p>
+  <h1 class="hero-title" style="position:relative">Baptiste<br><em>Ingénieur</em><br>Mécanique</h1>
+  <p class="hero-sub" style="position:relative">Conception mécanique, développement durable<br>et innovation industrielle.</p>
+  <div class="hero-badges">
+    <span class="badge red">ENISE · Centrale Lyon</span>
+    <span class="badge">SolidWorks · CATIA · Inventor</span>
+    <span class="badge">Génie Mécanique</span>
+    <span class="badge">Stage Sept. 2026</span>
+  </div>
+  <div class="hero-scroll" style="position:relative">
+    <div class="scroll-line"></div>
+    <span class="scroll-label">Défiler</span>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="about-visual">
+    <div class="about-img-parallax" data-parallax="0.3">
+      <div class="about-avatar">B</div>
+    </div>
+    <div class="about-deco"></div>
+  </div>
+  <div class="about-content">
+    <p class="section-label reveal">À propos</p>
+    <h2 class="section-title reveal reveal-delay-1">Passion pour<br>l'ingénierie<br>du mouvement.</h2>
+    <p class="reveal reveal-delay-2">Étudiant en Génie Mécanique à l'ENISE (Centrale Lyon-Saint-Étienne), j'associe rigueur technique et approche orientée durabilité. Mon parcours combine formations universitaires solides, expériences en entreprise et projets personnels ambitieux.</p>
+    <p class="reveal reveal-delay-2">Musicien en orchestre, j'applique ce même goût de la précision et de la coordination à mes projets d'ingénierie.</p>
+    <div class="about-stats reveal reveal-delay-3">
+      <div class="stat-card">
+        <div class="stat-number">3</div>
+        <div class="stat-label">Diplômes / Niveaux obtenus</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-number">4+</div>
+        <div class="stat-label">Logiciels CAO maîtrisés</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-number">2</div>
+        <div class="stat-label">Stages en entreprise</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-number">∞</div>
+        <div class="stat-label">Curiosité technique</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FORMATION -->
+<section id="formation">
+  <div class="formation-header">
+    <p class="section-label reveal">Parcours</p>
+    <h2 class="section-title reveal reveal-delay-1">Formation</h2>
+  </div>
+  <div class="timeline">
+
+    <div class="timeline-item reveal">
+      <div class="timeline-year">2024 →<br>Présent</div>
+      <div class="timeline-connector">
+        <div class="timeline-dot"></div>
+        <div class="timeline-line"></div>
+      </div>
+      <div class="timeline-content">
+        <div class="timeline-school">ENISE · École Centrale Lyon-Saint-Étienne</div>
+        <div class="timeline-degree">Cycle Ingénieur — Génie Mécanique</div>
+        <div class="timeline-desc">1ère année de cycle ingénieur à l'ENISE, école membre du réseau Centrale. Formation intensive en mécanique avancée, matériaux, fabrication et systèmes industriels.</div>
+        <div class="timeline-tags">
+          <span class="tag">Mécanique des solides</span>
+          <span class="tag">Matériaux</span>
+          <span class="tag">Fabrication</span>
+          <span class="tag">Centrale Group</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="timeline-item reveal">
+      <div class="timeline-year">2023 –<br>2024</div>
+      <div class="timeline-connector">
+        <div class="timeline-dot"></div>
+        <div class="timeline-line"></div>
+      </div>
+      <div class="timeline-content">
+        <div class="timeline-school">Université de Lille</div>
+        <div class="timeline-degree">Licence Génie Mécanique & Développement Durable</div>
+        <div class="timeline-desc">Licence en génie mécanique avec spécialisation en développement durable. Approche systémique de la conception orientée éco-responsabilité et cycle de vie des produits.</div>
+        <div class="timeline-tags">
+          <span class="tag">Développement durable</span>
+          <span class="tag">Éco-conception</span>
+          <span class="tag">Analyse cycle de vie</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="timeline-item reveal">
+      <div class="timeline-year">2021 –<br>2023</div>
+      <div class="timeline-connector">
+        <div class="timeline-dot"></div>
+        <div class="timeline-line"></div>
+      </div>
+      <div class="timeline-content">
+        <div class="timeline-school">Université de Lille</div>
+        <div class="timeline-degree">BUT Génie Mécanique et Productique</div>
+        <div class="timeline-desc">Formation technologique supérieure en production industrielle, conception assistée par ordinateur, métrologie et organisation de la production. Alternance théorie-pratique avec projets industriels.</div>
+        <div class="timeline-tags">
+          <span class="tag">CAO / DAO</span>
+          <span class="tag">Productique</span>
+          <span class="tag">Métrologie</span>
+          <span class="tag">Gestion de projet</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- COMPÉTENCES -->
+<section id="competences">
+  <div class="skills-left">
+    <p class="section-label reveal">Expertise</p>
+    <h2 class="section-title reveal reveal-delay-1">Compétences<br>techniques</h2>
+    <p class="reveal reveal-delay-2">Des outils de conception aux méthodes de fabrication, une palette technique construite à travers formations et terrains professionnels.</p>
+
+    <div class="skill-row reveal">
+      <div class="skill-name"><span>SolidWorks</span><span class="skill-pct">90%</span></div>
+      <div class="skill-track"><div class="skill-fill" data-width="90"></div></div>
+    </div>
+    <div class="skill-row reveal reveal-delay-1">
+      <div class="skill-name"><span>Autodesk Inventor</span><span class="skill-pct">85%</span></div>
+      <div class="skill-track"><div class="skill-fill" data-width="85"></div></div>
+    </div>
+    <div class="skill-row reveal reveal-delay-1">
+      <div class="skill-name"><span>CATIA V5</span><span class="skill-pct">75%</span></div>
+      <div class="skill-track"><div class="skill-fill" data-width="75"></div></div>
+    </div>
+    <div class="skill-row reveal reveal-delay-2">
+      <div class="skill-name"><span>AutoCAD</span><span class="skill-pct">80%</span></div>
+      <div class="skill-track"><div class="skill-fill" data-width="80"></div></div>
+    </div>
+    <div class="skill-row reveal reveal-delay-2">
+      <div class="skill-name"><span>Impression 3D (FDM, SLA)</span><span class="skill-pct">85%</span></div>
+      <div class="skill-track"><div class="skill-fill" data-width="85"></div></div>
+    </div>
+  </div>
+
+  <div class="skills-right reveal reveal-delay-1">
+    <div class="skill-card">
+      <div class="skill-card-icon">⚙️</div>
+      <div class="skill-card-name">Conception mécanique</div>
+      <div class="skill-card-desc">Modélisation 3D, assemblages complexes, mise en plan normée</div>
+    </div>
+    <div class="skill-card">
+      <div class="skill-card-icon">🖨️</div>
+      <div class="skill-card-name">Prototypage rapide</div>
+      <div class="skill-card-desc">Impression 3D FDM & SLA, fabrication de prototypes fonctionnels</div>
+    </div>
+    <div class="skill-card">
+      <div class="skill-card-icon">📋</div>
+      <div class="skill-card-name">Gestion de projet</div>
+      <div class="skill-card-desc">Coordination, documentation technique, suivi de production</div>
+    </div>
+    <div class="skill-card">
+      <div class="skill-card-icon">🌱</div>
+      <div class="skill-card-name">Éco-conception</div>
+      <div class="skill-card-desc">Analyse du cycle de vie, matériaux durables, conception responsable</div>
+    </div>
+    <div class="skill-card">
+      <div class="skill-card-icon">💻</div>
+      <div class="skill-card-name">Développement web</div>
+      <div class="skill-card-desc">Python, Flask, HTML/CSS/JS, Firebase — projets personnels</div>
+    </div>
+    <div class="skill-card">
+      <div class="skill-card-icon">🎻</div>
+      <div class="skill-card-name">Travail en équipe</div>
+      <div class="skill-card-desc">Musicien en orchestre — rigueur, coordination, écoute collective</div>
+    </div>
+  </div>
+</section>
+
+<!-- PROJETS -->
+<section id="projets">
+  <div style="text-align:center">
+    <p class="section-label reveal">Réalisations</p>
+    <h2 class="section-title reveal reveal-delay-1">Projets</h2>
+  </div>
+  <div class="projects-grid" style="margin-top:60px">
+
+    <div class="project-card reveal">
+      <div class="project-visual">
+        <div class="project-img-layer proj-bg-1" data-parallax="0.25">
+          <div class="project-icon">🔍</div>
+        </div>
+      </div>
+      <div class="project-body">
+        <div class="project-tag">Web · Python · IA</div>
+        <div class="project-title">Internship Tracker</div>
+        <div class="project-desc">Application web de suivi de recherche de stage hébergée sur NAS personnel. Scraping automatique, IA pour lettres de motivation, streaming temps réel, export PDF.</div>
+      </div>
+    </div>
+
+    <div class="project-card reveal reveal-delay-1">
+      <div class="project-visual">
+        <div class="project-img-layer proj-bg-2" data-parallax="0.25">
+          <div class="project-icon">🖨️</div>
+        </div>
+      </div>
+      <div class="project-body">
+        <div class="project-tag">Prototypage · Stage</div>
+        <div class="project-title">Pièces par impression 3D</div>
+        <div class="project-desc">Conception et fabrication de prototypes fonctionnels en impression 3D lors d'un stage. Documentation technique, tests matériaux et itérations de design.</div>
+      </div>
+    </div>
+
+    <div class="project-card reveal reveal-delay-2">
+      <div class="project-visual">
+        <div class="project-img-layer proj-bg-3" data-parallax="0.25">
+          <div class="project-icon">🌱</div>
+        </div>
+      </div>
+      <div class="project-body">
+        <div class="project-tag">Éco-conception · Licence</div>
+        <div class="project-title">Analyse cycle de vie produit</div>
+        <div class="project-desc">Projet de Licence portant sur l'analyse environnementale d'un produit industriel. Identification des leviers de réduction d'impact et propositions d'éco-conception.</div>
+      </div>
+    </div>
+
+    <div class="project-card reveal">
+      <div class="project-visual">
+        <div class="project-img-layer proj-bg-4" data-parallax="0.25">
+          <div class="project-icon">📐</div>
+        </div>
+      </div>
+      <div class="project-body">
+        <div class="project-tag">CAO · BUT</div>
+        <div class="project-title">Conception d'un mécanisme</div>
+        <div class="project-desc">Modélisation 3D complète sous SolidWorks d'un mécanisme industriel, avec assemblage, simulation cinématique et mise en plan normée ISO.</div>
+      </div>
+    </div>
+
+    <div class="project-card reveal reveal-delay-1">
+      <div class="project-visual">
+        <div class="project-img-layer proj-bg-5" data-parallax="0.25">
+          <div class="project-icon">📄</div>
+        </div>
+      </div>
+      <div class="project-body">
+        <div class="project-tag">Stage · Gestion de projet</div>
+        <div class="project-title">Documentation technique</div>
+        <div class="project-desc">Production de documentations techniques structurées (cahiers des charges, rapports, fiches process) dans un contexte industriel, avec utilisation d'AutoCAD.</div>
+      </div>
+    </div>
+
+    <div class="project-card reveal reveal-delay-2">
+      <div class="project-visual">
+        <div class="project-img-layer proj-bg-6" data-parallax="0.25">
+          <div class="project-icon">🎼</div>
+        </div>
+      </div>
+      <div class="project-body">
+        <div class="project-tag">Activité · Orchestre</div>
+        <div class="project-title">Musicien en orchestre</div>
+        <div class="project-desc">Pratique musicale en orchestre, développant rigueur, précision temporelle, écoute collective et coordination — compétences directement transposables en ingénierie.</div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- EXPÉRIENCES -->
+<section id="experiences">
+  <div>
+    <p class="section-label reveal">Terrain</p>
+    <h2 class="section-title reveal reveal-delay-1">Expériences<br>professionnelles</h2>
+  </div>
+  <div class="exp-grid">
+
+    <div class="exp-card reveal">
+      <div class="exp-period">Stage · 2023</div>
+      <div class="exp-company">Impression 3D & Prototypage</div>
+      <div class="exp-role">Technicien CAO / Prototypage — Secteur industriel</div>
+      <div class="exp-desc">Conception de pièces sous SolidWorks et fabrication par impression 3D (FDM, SLA). Suivi qualité, tests fonctionnels et rédaction de fiches techniques.</div>
+      <div class="exp-skills">
+        <span class="exp-skill">SolidWorks</span>
+        <span class="exp-skill">Impression 3D</span>
+        <span class="exp-skill">Contrôle qualité</span>
+      </div>
+    </div>
+
+    <div class="exp-card reveal reveal-delay-1">
+      <div class="exp-period">Stage · Gestion de projet</div>
+      <div class="exp-company">Coordination technique</div>
+      <div class="exp-role">Assistant chef de projet — Secteur technique</div>
+      <div class="exp-desc">Participation à la coordination de projets techniques : planification, suivi des jalons, communication avec les équipes et rédaction de documentation (AutoCAD, rapports).</div>
+      <div class="exp-skills">
+        <span class="exp-skill">AutoCAD</span>
+        <span class="exp-skill">Gestion de projet</span>
+        <span class="exp-skill">Documentation</span>
+      </div>
+    </div>
+
+    <div class="exp-card reveal">
+      <div class="exp-period">En cours · 2026</div>
+      <div class="exp-company">Recherche de stage 4 mois</div>
+      <div class="exp-role">Stage ingénieur — Dès septembre 2026</div>
+      <div class="exp-desc">Disponible à partir de septembre 2026 pour un stage de 4 mois en génie mécanique, conception ou production. Mobilité : Nord, Saint-Étienne, Lyon et environs.</div>
+      <div class="exp-skills">
+        <span class="exp-skill">Disponible sept. 2026</span>
+        <span class="exp-skill">Nord / Lyon / Saint-Étienne</span>
+      </div>
+    </div>
+
+    <div class="exp-card reveal reveal-delay-1">
+      <div class="exp-period">Continu</div>
+      <div class="exp-company">Projets personnels tech</div>
+      <div class="exp-role">Développeur full-stack autodidacte</div>
+      <div class="exp-desc">Développement d'une application web de suivi de stage (Flask, Firebase, Python, scraping, API Anthropic). Hébergement sur NAS personnel avec accès distant via ngrok.</div>
+      <div class="exp-skills">
+        <span class="exp-skill">Python / Flask</span>
+        <span class="exp-skill">Firebase</span>
+        <span class="exp-skill">API Anthropic</span>
+        <span class="exp-skill">HTML/CSS/JS</span>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <p class="section-label reveal">Parlons-nous</p>
+  <h2 class="section-title reveal reveal-delay-1">Disponible pour<br>un stage dès<br>septembre 2026.</h2>
+  <p class="contact-sub reveal reveal-delay-2">Ingénieur mécanique en formation à Centrale Lyon.<br>Ouvert aux opportunités dans les régions Nord, Lyon et Saint-Étienne.</p>
+  <div class="contact-links reveal reveal-delay-3">
+    <a href="mailto:baptiste@email.com" class="contact-btn primary">✉️ &nbsp;M'écrire</a>
+    <a href="https://linkedin.com/in/baptiste" class="contact-btn secondary">🔗 &nbsp;LinkedIn</a>
+    <a href="#" class="contact-btn secondary">📄 &nbsp;Télécharger le CV</a>
+  </div>
+  <div class="contact-info reveal" style="margin-top:40px">
+    <p>📍 Saint-Étienne, France &nbsp;·&nbsp; 🎓 ENISE · Centrale Lyon &nbsp;·&nbsp; ✈️ Mobilité nationale</p>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <span>© 2026 Baptiste Mathieu — Portfolio</span>
+  <span>Ingénieur Mécanique · <strong>ENISE Centrale Lyon</strong></span>
+  <span>Fait avec passion ❤️</span>
+</footer>
+
+<script>
+// ─── SCROLL REVEAL ───
+const reveals = document.querySelectorAll('.reveal');
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); } });
+}, { threshold: 0.12 });
+reveals.forEach(el => observer.observe(el));
+
+// ─── SKILL BARS ───
+const skillObserver = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      const fill = e.target.querySelector('.skill-fill');
+      if (fill) fill.style.width = fill.dataset.width + '%';
+    }
+  });
+}, { threshold: 0.5 });
+document.querySelectorAll('.skill-row').forEach(r => skillObserver.observe(r));
+
+// ─── PARALLAX ENGINE (Apple-style scroll) ───
+function parallax() {
+  const scrollY = window.scrollY;
+
+  // About image
+  const aboutParallax = document.querySelector('.about-img-parallax');
+  if (aboutParallax) {
+    const parent = aboutParallax.parentElement;
+    const rect = parent.getBoundingClientRect();
+    const progress = (window.innerHeight / 2 - rect.top) / window.innerHeight;
+    aboutParallax.style.transform = `translateY(${progress * 60}px)`;
+  }
+
+  // Project cards inner image
+  document.querySelectorAll('.project-img-layer').forEach(layer => {
+    const rect = layer.closest('.project-card').getBoundingClientRect();
+    const progress = (window.innerHeight / 2 - rect.top) / window.innerHeight;
+    layer.style.transform = `translateY(${progress * 40}px)`;
+  });
+
+  // Hero orb subtle move
+  const orb = document.querySelector('.hero-orb');
+  if (orb) orb.style.transform = `translateY(${scrollY * 0.3}px)`;
+}
+
+window.addEventListener('scroll', () => {
+  requestAnimationFrame(parallax);
+}, { passive: true });
+
+// ─── NAV OPACITY ───
+const navbar = document.getElementById('navbar');
+window.addEventListener('scroll', () => {
+  if (window.scrollY > 60) {
+    navbar.style.background = 'rgba(10,10,10,0.92)';
+  } else {
+    navbar.style.background = 'rgba(10,10,10,0.72)';
+  }
+}, { passive: true });
+
+parallax();
+</script>
+</body>
+</html>
